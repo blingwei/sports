@@ -1,7 +1,7 @@
 package com.yw.sports.controller;
 
 
-import com.yw.sports.bean.requestBaen.EditUserInfoRequest;
+import com.yw.sports.bean.commanBean.OperateBean;
 import com.yw.sports.pojo.User;
 import com.yw.sports.pojo.UserInfo;
 import com.yw.sports.result.Result;
@@ -17,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.HtmlUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -85,6 +85,36 @@ public class UserController {
         UserInfo userInfo = userService.getUserInoByUserName(userName);
         return ResultFactory.buildSuccessResult("", userInfo);
     }
+
+    @GetMapping("getCoaches")
+    public Result getCoaches(@Param("start") Integer start, @Param("size") Integer size, @Param("input") String input){
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("coaches",userService.getCoaches(start, size, input));
+        resultMap.put("nums", userService.getCoacheNums(input));
+        return ResultFactory.buildSuccessResult("", resultMap);
+    }
+
+    @GetMapping("getMyCoach")
+    public Result getMyCoach(){
+        return ResultFactory.buildSuccessResult("", userService.getMyCoach());
+    }
+
+    @GetMapping("getMyUsers")
+    public Result getMyUsers(){
+        return ResultFactory.buildSuccessResult("", userService.getMyUsers());
+    }
+
+    @PostMapping("selectCoach")
+    public Result selectCoach(@RequestBody OperateBean operateBean){
+        try{
+            userService.selectCoach(operateBean.getId());
+            return ResultFactory.buildSuccessResult("修改成功", null);
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResultFactory.buildFailResult(e.getMessage());
+        }
+    }
+
 
     @PostMapping("editUserInfo")
     public Result editUserInfo(@RequestBody UserInfo userInfo){

@@ -41,5 +41,11 @@
     select id, send_user_id, receive_user_id, create_time, content, is_delete, is_read
     from message
   </select>
+    <select id="getSuggest" resultType="java.lang.String">
+      select content
+      from message
+      where send_user_id = #{CoachId}
+      and receive_user_id = #{userId}
+    </select>
 
 </mapper>

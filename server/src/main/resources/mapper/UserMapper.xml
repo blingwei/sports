@@ -34,13 +34,52 @@
   <select id="selectAll" resultMap="BaseResultMap">
     select id, username, `password`, salt, `role`
     from user
+    where role = #{role}
   </select>
   <select id="findByName" resultMap="BaseResultMap">
     select *
     from user
     where username = #{name}
   </select>
+  <select id="getCoaches" resultType="com.yw.sports.bean.responseBean.CoachesResponse">
+    select u.id as id, ui.sex as sex, ui.name as name
+    from user u
+    left join user_info ui on u.id = ui.user_id
+    where u.role = 2
+    <if test="input != ''">
+      and ui.name rlike #{input}
+    </if>
+    limit #{start}, #{size}
+  </select>
+  <select id="getCoacheNums" resultType="java.lang.Integer">
+    select count(*)
+    from user u
+    left join user_info ui on u.id = ui.user_id
+    where u.role = 2
+    <if test="input != ''">
+      and ui.name rlike #{input}
+    </if>
+  </select>
+    <select id="getCoachById" resultMap="BaseResultMap">
+      select u2.*
+      from user u1,user_coach_relation, user u2
+      where u1.id = user_coach_relation.user_id
+      and user_coach_relation.coach_id = u2.id
+      and u1.id = #{id}
+    </select>
+  <delete id="deleteCoach">
+    delete from user_coach_relation
+    where user_id = #{userId}
+    and coach_id = #{id}
+  </delete>
+  <insert id="addCoach">
+    insert into user_coach_relation(user_id, coach_id, create_time)
+    VALUES (#{userId}, #{id}, now())
+  </insert>
+  <select id="getMyUsers" resultType="com.yw.sports.bean.responseBean.MyUsersResponse">
 
+
+  </select>
 
 
 </mapper>
