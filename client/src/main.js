@@ -8,6 +8,16 @@ import 'element-ui/lib/theme-chalk/index.css'
 import store from "./store"
 import el from "element-ui/src/locale/lang/el";
 
+import VueAMap from 'vue-amap'
+Vue.use(VueAMap);
+VueAMap.initAMapApiLoader({
+  key: '********************',//自己在高德地图平台上的key值
+plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor','AMap.ControlBar','AMap.MouseTool','AMap.GeometryUtil','AMap.DistrictSearch'],//需要的高德地图插件，需要什么插件添加什么插件（这里只是其中一部分）
+// 默认高德 sdk 版本为 1.4.4
+v: '1.4.4',
+uiVersion:'1.0.11'
+});
+
 //设置反向代理
 var axios = require('axios');
 axios.defaults.baseURL = 'http://localhost:8441/api';

@@ -17,4 +17,6 @@ public interface MessageMapper {
     int updateByPrimaryKey(Message record);
 
     String getSuggest(@Param("userId") Integer userId, @Param("CoachId") Integer CoachId);
+
+    void delete(Message message);
 }

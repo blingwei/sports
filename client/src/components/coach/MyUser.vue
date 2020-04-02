@@ -32,7 +32,7 @@
         <el-table-column
           fixed="right"
           label="操作"
-          width="120">
+          width="240">
           <template slot-scope="scope">
             <el-button
               type="text"
@@ -84,6 +84,28 @@
 
         },
         suggest(id){
+          let obj = this;
+          this.$prompt('请输入建议', '建议', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+          }).then(({ value }) => {
+            obj.$axios.post('suggest', {
+              id: id,
+              object: value
+            }).then(res => {
+              if (res && res.status === 200) {
+                this.$message({
+                  type: 'success',
+                  message: '消息以发送'
+                });
+              }
+            });
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '取消输入'
+            });
+          });
 
         }
       }

@@ -15,12 +15,21 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.yw.sports.pojo.Comment">
-    insert into comment (id, user_id, condition_id, 
-      pid, reply_id, create_time, 
-      content)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{conditionId,jdbcType=INTEGER}, 
-      #{pid,jdbcType=INTEGER}, #{replyId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{content,jdbcType=VARCHAR})
+    insert into comment (user_id, condition_id,
+    <if test="replyId != null">
+      reply_id,
+    </if>
+    <if test="pid != null">
+      pid,
+    </if>
+    create_time, content) values (#{userId}, #{conditionId},
+    <if test="replyId != null">
+      #{replyId},
+    </if>
+    <if test="pid != null">
+      #{pid},
+    </if>
+    now(), #{content})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.yw.sports.pojo.Comment">
     update comment
@@ -41,5 +50,9 @@
     select id, user_id, condition_id, pid, reply_id, create_time, content
     from comment
   </select>
+    <select id="findCommentByConditionId" resultMap="BaseResultMap">
+      select * from comment
+      where condition_id = #{id}
+    </select>
 
 </mapper>

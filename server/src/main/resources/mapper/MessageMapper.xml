@@ -15,12 +15,10 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="com.yw.sports.pojo.Message">
-    insert into message (id, send_user_id, receive_user_id, 
-      create_time, content, is_delete, 
-      is_read)
-    values (#{id,jdbcType=INTEGER}, #{sendUserId,jdbcType=INTEGER}, #{receiveUserId,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{content,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, 
-      #{isRead,jdbcType=INTEGER})
+    insert into message (send_user_id, receive_user_id,
+      create_time, content)
+    values (#{sendUserId,jdbcType=INTEGER}, #{receiveUserId,jdbcType=INTEGER},
+      now(), #{content,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKey" parameterType="com.yw.sports.pojo.Message">
     update message
@@ -47,5 +45,10 @@
       where send_user_id = #{CoachId}
       and receive_user_id = #{userId}
     </select>
+  <delete id="delete">
+    delete from message
+    where send_user_id = #{sendUserId,jdbcType=INTEGER} and
+      receive_user_id = #{receiveUserId,jdbcType=INTEGER}
+  </delete>
 
 </mapper>

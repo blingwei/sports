@@ -1,5 +1,7 @@
 package com.yw.sports.pojo;
 
+import com.yw.sports.enums.TrendEnum;
+
 import java.util.Date;
 
 public class Record {
@@ -13,7 +15,11 @@ public class Record {
 
     private Date createTime;
 
+    private String time;
+
     private Date endTime;
+
+    private String trend;
 
     public Integer getId() {
         return id;
@@ -61,5 +67,21 @@ public class Record {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getTrend() {
+        return trend;
+    }
+
+    public void setTrend(String trend) {
+        this.trend = trend;
     }
 }

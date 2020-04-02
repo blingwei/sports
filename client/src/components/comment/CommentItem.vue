@@ -37,9 +37,9 @@
                   return;
               }
               this.commentInfo = this.$parent.comment;
-              this.commentInfo.content = this.textarea
+              this.commentInfo.content = this.textarea;
               this.$axios.post("/comment/addComment", this.commentInfo).then(res => {
-                  this.$message.info(res.data.message)
+                  this.$message.info(res.data.message);
                   this.dialogVisible = false;
                   this.cleanComment();
                   this.$parent.initComment();

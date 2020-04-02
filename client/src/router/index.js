@@ -9,6 +9,7 @@ import RecentSport from "../components/user/RecentSport";
 import SportRecord from "../components/user/SportRecord";
 import MyCoach from "../components/user/MyCoach";
 import MyUser from "../components/coach/MyUser";
+import ConditionDisplay from "../components/user/ConditionDisplay";
 
 
 Vue.use(Router)
@@ -55,6 +56,11 @@ export default new Router({
           path: 'myUser',
           name: 'MyUser',
           component: MyUser,
+        },
+        {
+          path:'conditionDisplay',
+          name: 'ConditionDisplay',
+          component: ConditionDisplay
         }
       ]
     },

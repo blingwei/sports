@@ -2,9 +2,11 @@ package com.yw.sports.controller;
 
 
 import com.yw.sports.bean.commanBean.OperateBean;
+import com.yw.sports.pojo.Condition;
 import com.yw.sports.pojo.User;
 import com.yw.sports.pojo.UserInfo;
 import com.yw.sports.result.Result;
+import com.yw.sports.service.ConditionService;
 import com.yw.sports.service.UserService;
 import com.yw.sports.utils.ResultFactory;
 import org.apache.ibatis.annotations.Param;
@@ -27,6 +29,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ConditionService conditionService;
 
 
     @PostMapping("login")
@@ -125,6 +130,23 @@ public class UserController {
             e.printStackTrace();
             return ResultFactory.buildFailResult(e.getMessage());
         }
+    }
+
+    @PostMapping("submitCondition")
+    private Result submitCondition(@RequestBody Condition condition){
+        condition.setUserId(userService.getCurrentUser().getId());
+        conditionService.submitCondition(condition);
+        return ResultFactory.buildSuccessResult("成功发布", null);
+    }
+
+    @GetMapping("getAllConditions")
+    public Result getAllConditions(){
+        return ResultFactory.buildSuccessResult("", conditionService.getAllConditions());
+    }
+
+    @GetMapping("getConditionById")
+    public Result getConditionById(@Param("id") Integer id){
+        return ResultFactory.buildSuccessResult("", conditionService.getConditionById(id));
     }
 
 //    @GetMapping("findUserByUserName")

@@ -31,5 +31,5 @@ public interface UserMapper {
 
     void addCoach(@Param("userId") int userId, @Param("id") int id);
 
-    MyUsersResponse getMyUsers(Integer cocahId);
+    List<MyUsersResponse> getMyUsers(Integer cocahId);
 }

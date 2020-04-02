@@ -5,23 +5,27 @@ package com.yw.sports.enums;
  * 表示用户发表的作品的状态
  */
 
-public enum StatusEnum implements BaseEnum<StatusEnum, Integer>{
+public enum TrendEnum implements BaseEnum<TrendEnum, Integer>{
     /**
      * 未知的类型
      */
     UN_KNOW(-1, "未知类型"),
 
-    VERIFY(0,"审核中"),
+    FAT(0,"导致肥胖"),
 
-    PASS(1, "通过"),
+    NORMAL(1, "正常水平"),
 
-    ERROR(2,"异常");
+    SLIM(2,"减肥"),
+
+    OVER(3,"运动过度");
+
+
 
     private final Integer value;
     private final String message;
 
 
-    private StatusEnum(Integer value, String message){
+    private TrendEnum(Integer value, String message){
         this.value = value;
         this.message = message;
     }
@@ -37,8 +41,8 @@ public enum StatusEnum implements BaseEnum<StatusEnum, Integer>{
         return message;
     }
 
-    public static StatusEnum valueOf(Integer value){
-        for(StatusEnum typeEnum: StatusEnum.values()){
+    public static TrendEnum valueOf(Integer value){
+        for(TrendEnum typeEnum: TrendEnum.values()){
 
             if(typeEnum.getValue().equals(value)){
                 return typeEnum;
@@ -48,7 +52,7 @@ public enum StatusEnum implements BaseEnum<StatusEnum, Integer>{
     }
 
     public static String getName(Integer value){
-        for(StatusEnum typeEnum: StatusEnum.values()){
+        for(TrendEnum typeEnum: TrendEnum.values()){
             if(typeEnum.getValue().equals(value)){
                 return typeEnum.getMessage();
             }

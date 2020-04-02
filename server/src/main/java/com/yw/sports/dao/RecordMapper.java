@@ -1,6 +1,7 @@
 package com.yw.sports.dao;
 
 import com.yw.sports.pojo.Record;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,4 +15,8 @@ public interface RecordMapper {
     List<Record> selectAll();
 
     int updateByPrimaryKey(Record record);
+
+    List<Record> getRecordsByUserId(@Param("id") Integer id, @Param("start") Integer start, @Param("size") Integer size);
+
+    Integer getRecordsNumsByUserId(Integer userId);
 }

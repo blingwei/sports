@@ -122,10 +122,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public MyUsersResponse getMyUsers() {
+    public List<MyUsersResponse> getMyUsers() {
         Integer cocahId = getCurrentUser().getId();
-        MyUsersResponse res = userMapper.getMyUsers(cocahId);
-
+        List<MyUsersResponse>  res = userMapper.getMyUsers(cocahId);
         return res;
     }
 }

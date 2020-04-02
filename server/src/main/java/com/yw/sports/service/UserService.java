@@ -31,5 +31,5 @@ public interface UserService {
 
     void selectCoach(int id);
 
-    MyUsersResponse getMyUsers();
+    List<MyUsersResponse> getMyUsers();
 }

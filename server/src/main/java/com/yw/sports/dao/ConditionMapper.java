@@ -1,5 +1,6 @@
 package com.yw.sports.dao;
 
+import com.yw.sports.bean.responseBean.ConditionResponse;
 import com.yw.sports.pojo.Condition;
 
 import java.util.List;
@@ -14,4 +15,8 @@ public interface ConditionMapper {
     List<Condition> selectAll();
 
     int updateByPrimaryKey(Condition record);
+
+    List<ConditionResponse> selectAllCondition();
+
+    ConditionResponse getConditionById(Integer id);
 }

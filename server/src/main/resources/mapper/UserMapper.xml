@@ -76,8 +76,11 @@
     insert into user_coach_relation(user_id, coach_id, create_time)
     VALUES (#{userId}, #{id}, now())
   </insert>
-  <select id="getMyUsers" resultType="com.yw.sports.bean.responseBean.MyUsersResponse">
-
+  <select id="getMyUsers" resultType="com.yw.sports.bean.responseBean.MyUsersResponse" parameterType="java.lang.Integer">
+    select ui.name as name, ui.age as age, ui.sex as sex, ui.user_id as id
+    from user_coach_relation uc
+    LEFT JOIN  user_info ui on uc.user_id = ui.user_id
+    where uc.coach_id = #{id}
 
   </select>
 
