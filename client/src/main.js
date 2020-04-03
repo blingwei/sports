@@ -8,16 +8,23 @@ import 'element-ui/lib/theme-chalk/index.css'
 import store from "./store"
 import el from "element-ui/src/locale/lang/el";
 
-import VueAMap from 'vue-amap'
+import VueAMap from 'vue-amap';
+import { lazyAMapApiLoaderInstance } from 'vue-amap';
+
 Vue.use(VueAMap);
 VueAMap.initAMapApiLoader({
-  key: '********************',//自己在高德地图平台上的key值
-plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor','AMap.ControlBar','AMap.MouseTool','AMap.GeometryUtil','AMap.DistrictSearch'],//需要的高德地图插件，需要什么插件添加什么插件（这里只是其中一部分）
-// 默认高德 sdk 版本为 1.4.4
-v: '1.4.4',
-uiVersion:'1.0.11'
+  key: 'YOUR_KEY',
+  plugin: ['Autocomplete', 'PlaceSearch', 'ToolBar', 'MapType', 'PolyEditor', 'AMap.CircleEditor','ControlBar','RangingTool','DistrictSearch','AMap.DragRoute','Walking'],
+  uiVersion: '1.0' ,
+  v: '1.4.4'
 });
 
+lazyAMapApiLoaderInstance.load().then(() => {
+  // your code ...
+  this.map = new AMap.Map('amapContainer', {
+    center: new AMap.LngLat(121.59996, 31.197646)
+  });
+});
 //设置反向代理
 var axios = require('axios');
 axios.defaults.baseURL = 'http://localhost:8441/api';
@@ -71,6 +78,7 @@ new Vue({
   el: '#app',
   router,
   store,
+
   components: { App },
   template: '<App/>'
 })
