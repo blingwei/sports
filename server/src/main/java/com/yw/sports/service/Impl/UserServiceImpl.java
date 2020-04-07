@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
         GetMyCoachResponse res = new GetMyCoachResponse();
         Integer id = getCurrentUser().getId();
         User coach = userMapper.getCoachById(id);
-        res.setName(coach.getUsername());
+        res.setName(userInfoMapper.selectByUserId(coach.getId()).getName());
         res.setSuggest(messageMapper.getSuggest(id, coach.getId()));
         return res;
     }
