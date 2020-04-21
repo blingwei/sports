@@ -50,7 +50,8 @@ public class SportController {
         record.setEndTime(creatRecordRequest.getEndTime());
         record.setLine(creatRecordRequest.getLine());
         record.setDistance(creatRecordRequest.getDistance()/1000 + " ");
-        record.setCalorie("0");
+        int s = (int) ((record.getEndTime().getTime()-record.getCreateTime().getTime())/1000);
+        record.setCalorie(1000*(creatRecordRequest.getDistance()/s)*4.186 + "");
         recordService.addRecord(record);
         return ResultFactory.buildSuccessResult(null, null);
     }
