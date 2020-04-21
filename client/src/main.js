@@ -13,8 +13,8 @@ import { lazyAMapApiLoaderInstance } from 'vue-amap';
 
 Vue.use(VueAMap);
 VueAMap.initAMapApiLoader({
-  key: 'YOUR_KEY',
-  plugin: ['Autocomplete', 'PlaceSearch', 'ToolBar', 'MapType', 'PolyEditor', 'AMap.CircleEditor','ControlBar','RangingTool','DistrictSearch','AMap.DragRoute','Walking'],
+  key: 'ac3dace17af293ae84ead1fa7f96a30e',
+  plugin: ['Autocomplete', 'PlaceSearch', 'ToolBar', 'MapType', 'PolyEditor', 'AMap.CircleEditor','ControlBar','RangingTool','DistrictSearch','AMap.DragRoute','Walking', 'AMap.MouseTool'],
   uiVersion: '1.0' ,
   v: '1.4.4'
 });

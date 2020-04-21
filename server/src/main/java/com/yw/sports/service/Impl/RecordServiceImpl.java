@@ -26,4 +26,9 @@ public class RecordServiceImpl implements RecordService {
     public Integer getRecordsNumsByUserId(Integer userId) {
         return recordMapper.getRecordsNumsByUserId(userId);
     }
+
+    @Override
+    public void addRecord(Record record) {
+        recordMapper.insert(record);
+    }
 }

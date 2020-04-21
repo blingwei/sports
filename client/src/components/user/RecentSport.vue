@@ -2,8 +2,7 @@
     <div class="amap-page-container">
         <el-amap-search-box class="search-box" :search-option="searchOption"
                             :on-search-result="onSearchResult"></el-amap-search-box>
-        <el-amap vid="map" :center="mapCenter" :zoom="12" class="amap-demo" :plugin="plugin" :events="events">
-            <el-amap-marker v-for="(marker, index) in markers" :position="marker" :key="index"></el-amap-marker>
+        <el-amap vid="map"  :zoom="12" class="amap-demo" :plugin="plugin" :events="events">
         </el-amap>
 
         <el-row style="margin-top: 10px; height: 30px; line-height: 30px">
@@ -21,7 +20,9 @@
                 <el-switch
                         v-model="flag"
                         active-color="#13ce66"
-                        inactive-color="#ff4949">
+                        inactive-color="#ff4949"
+                        @change="darwMap"
+                >
                 </el-switch>
             </el-col>
             <el-col :span="4">
@@ -46,42 +47,36 @@
                     citylimit: false
                 },
                 mapCenter: [121.59996, 31.197646],
-                walking:{},
-                plugin: [{
-                    pName: 'Walking',
-                    events: {
-                    init(instance) {
-                      // self.walking = instance;
-                      // console.log(instance)
-                    }
-                  }},
-                  {
-                    pName: 'RangingTool',
-                    events: {
-                      init(instance) {
-                        console.log(instance)
-                        instance.turnOn()
-                      }
-                    }},
-
-
+                mouseTool:{},
+                lines:[],
+                distance: 0,
+                plugin: [
                 ],
                 events: {
+                  init(o){
+                    self.mouseTool = new AMap.MouseTool(o);
+                    self.mouseTool.on('draw', function (e) {
+                        self.distance = e.obj.getLength();
+                        self.lines = e.obj.getPath();
+                    });
+                  }
                 },
                 date: [],
-                flag: true
+                flag: false
             }
 
         },
         mounted() {
+
         },
-        methods: {
-          addMarker() {
-            let lng = 121.5 + Math.round(Math.random() * 1000) / 10000;
-            let lat = 31.197646 + Math.round(Math.random() * 500) / 10000;
-            this.markers.push([lng, lat]);
-          }
-          ,
+      methods: {
+          darwMap(flag){
+            if(flag){
+              this.mouseTool.rule();
+            }else{
+              this.mouseTool.close();
+            }
+          },
           onSearchResult(pois) {
             let latSum = 0;
             let lngSum = 0;
@@ -100,15 +95,45 @@
             }
           },
           createRecord() {
-            let vm = this;
-            // this.walking.search([116.399028, 39.845042], [116.436281, 39.880719], function (status, result) {
-            //   // result即是对应的步行路线数据信息，相关数据结构文档请参考  https://lbs.amap.com/api/javascript-api/reference/route-search#m_WalkingResult
-            //   if (status === 'complete') {
-            //     console.log('绘制步行路线完成'+result)
-            //   } else {
-            //     console.logr('步行路线数据查询失败' + result)
-            //   }
-            // });
+            let self = this;
+            let line = "";
+            self.lines.forEach(point =>{
+              if(point  !== 'undefined'){
+                let data = point.lng + "," + point.lat;
+                line += data + ":";
+              }
+            });
+            this.$confirm('您确定要发布吗?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              this.$axios.post("creatRecord", {
+                line: line,
+                distance: self.distance,
+                creatTime: self.date[0],
+                endTime:self.date[1],
+              }).then(res =>{
+                if(res && res.status){
+                  this.$message({
+                    type: 'success',
+                    message: '发布成功!'
+                  });
+                }else{
+                  this.$message({
+                    type: 'info',
+                    message: '发布失败!'
+                  });
+                }
+
+              })
+            }).catch(() => {
+              this.$message({
+                type: 'info',
+                message: '已取消发布'
+              });
+            });
+
 
           }
         }

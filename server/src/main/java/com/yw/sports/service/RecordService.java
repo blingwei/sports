@@ -10,4 +10,6 @@ public interface RecordService {
     List<Record> getRecordsByUserId(Integer id, Integer start, Integer size);
 
     Integer getRecordsNumsByUserId(Integer userId);
+
+    void addRecord(Record record);
 }

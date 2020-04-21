@@ -52,6 +52,53 @@
         </el-table-column>
       </el-table>
     </el-card>
+    <el-dialog title="查看" :visible.sync="dialogFormVisible">
+      <el-card style="margin: 18px 2%;width: 95%">
+        <el-table
+          stripe
+          :data="records"
+          style="width: 100%">
+          <el-table-column
+            type="selection"
+            width="60">
+          </el-table-column>
+          <el-table-column
+            type="index"
+            label="序号"
+            width="60">
+          </el-table-column>
+          <el-table-column
+            prop="time"
+            label="日期"
+            fit>
+          </el-table-column>
+          <el-table-column
+            prop="calorie"
+            label="消耗的卡路里"
+            fit>
+          </el-table-column>
+          <el-table-column
+            prop="distance"
+            label="距离"
+            fit>
+          </el-table-column>
+          <el-table-column
+            prop="trend"
+            label="运动趋势"
+            fit>
+          </el-table-column>
+        </el-table>
+        <el-pagination
+          style="text-align: right"
+          @current-change="handleCurrentChange"
+          :page-size="size"
+          layout="total,prev, pager, next, jumper"
+          :total="nums"
+        >
+        </el-pagination>
+      </el-card>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -61,6 +108,12 @@
       data() {
         return {
           users: [],
+
+          dialogFormVisible: false,
+          size: 8,
+          records: [],
+          nums: 0,
+          curPage: 1,
         }
       },
       mounted() {
@@ -81,7 +134,26 @@
           })
         },
         view(id){
+          let obj = this;
+          obj.dialogFormVisible = true;
+          obj.$axios.get('getRecords', {
+            params: {
+              start: (obj.curPage - 1) * obj.size,
+              size: obj.size,
+              id: id
+            }
+          }).then(res => {
+            if (res && res.status === 200) {
+              obj.records = res.data.data.records;
+              obj.nums = res.data.data.nums
+            }
+          })
+        },
 
+        handleCurrentChange(val) {
+          this.curPage = val;
+          this.initRecords();
+          console.log(`当前页: ${val}`);
         },
         suggest(id){
           let obj = this;

@@ -21,6 +21,16 @@ public class Record {
 
     private String trend;
 
+    private String line;
+
+    public String getLine() {
+        return line;
+    }
+
+    public void setLine(String line) {
+        this.line = line;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -84,4 +94,6 @@ public class Record {
     public void setTrend(String trend) {
         this.trend = trend;
     }
+
+
 }

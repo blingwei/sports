@@ -6,6 +6,7 @@
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
         <result column="calorie" jdbcType="VARCHAR" property="calorie"/>
         <result column="distance" jdbcType="VARCHAR" property="distance"/>
+        <result column="line" jdbcType="VARCHAR" property="line"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
     </resultMap>
@@ -14,11 +15,12 @@
     where id = #{id,jdbcType=INTEGER}
   </delete>
     <insert id="insert" parameterType="com.yw.sports.pojo.Record">
-    insert into record (id, user_id, calorie, 
-      distance, create_time, end_time
+    insert into record (user_id, calorie,
+      distance, create_time, end_time, line
       )
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{calorie,jdbcType=VARCHAR}, 
+    values (#{userId,jdbcType=INTEGER}, #{calorie,jdbcType=VARCHAR},
       #{distance,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}
+      ,#{line,jdbcType=VARCHAR}
       )
   </insert>
     <update id="updateByPrimaryKey" parameterType="com.yw.sports.pojo.Record">
@@ -40,7 +42,7 @@
     from record
   </select>
     <select id="getRecordsByUserId" resultMap="BaseResultMap">
-    select  user_id, Sum(calorie) as calorie, Sum(distance) as distance, date_format(create_time, '%Y-%m-%d') as time
+    select  user_id, Sum(calorie) as calorie, Sum(distance) as distance, date_format(create_time, '%Y-%m-%d') as time, any_value(line) as line
     from record
     where user_id = #{id}
 	GROUP BY date_format(create_time, '%Y-%m-%d')

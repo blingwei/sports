@@ -42,7 +42,7 @@
             <el-button
               type="text"
               size="small"
-              @click=""
+              @click="viewMap(scope.row.line)"
             >
               查看轨迹
             </el-button>
@@ -58,53 +58,92 @@
       >
       </el-pagination>
     </el-card>
+
+    <el-dialog title="查看" :visible.sync="dialogFormVisible">
+      <el-amap vid="map" :zoom="12" class="amap-demo" :events="events" :center="center">
+        <el-amap-polyline :path="polyline.path"></el-amap-polyline>
+      </el-amap>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-    export default {
-        name: "SportRecord",
-      data() {
-        return {
-          size: 8,
-          records: [],
-          nums: 0,
-          curPage: 1,
+  export default {
+    name: "SportRecord",
+    data() {
+      let self = this;
+      return {
+        size: 8,
+        records: [],
+        nums: 0,
+        curPage: 1,
+
+        dialogFormVisible: false,
+
+        map: {},
+        center: [],
+        events: {
+          init(o) {
+            self.map = o
+          }
+        },
+        polyline: {
+          path: []
         }
+      }
+    },
+    mounted() {
+      this.initRecords();
+    },
+    computed: {
+      tableHeight() {
+        return window.innerHeight - 320
+      }
+    },
+    methods: {
+      initRecords() {
+        let obj = this;
+        obj.$axios.get('getRecords', {
+          params: {
+            start: (obj.curPage - 1) * obj.size,
+            size: obj.size,
+            input: obj.input
+          }
+        }).then(res => {
+          if (res && res.status === 200) {
+            obj.records = res.data.data.records;
+            obj.nums = res.data.data.nums
+          }
+        })
       },
-      mounted() {
+      handleCurrentChange(val) {
+        this.curPage = val;
         this.initRecords();
+        console.log(`当前页: ${val}`);
       },
-      computed: {
-        tableHeight() {
-          return window.innerHeight - 320
-        }
-      },
-      methods: {
-        initRecords() {
-          let obj = this;
-          obj.$axios.get('getRecords', {
-            params: {
-              start: (obj.curPage - 1) * obj.size,
-              size: obj.size,
-              input: obj.input
-            }
-          }).then(res => {
-            if (res && res.status === 200) {
-              obj.records = res.data.data.records;
-              obj.nums = res.data.data.nums
-            }
-          })
-        },
-        handleCurrentChange(val){
-          this.curPage = val;
-          this.initRecords();
-          console.log(`当前页: ${val}`);
-        },
+      viewMap(line) {
+        console.log(line);
+        let path = [];
+        let l  = line.split(":");
+        l.forEach(item =>{
+          let data = item.split(",");
+          if(data.length === 2){
+            let p = [data[0], data[1]];
+            path.push(p)
+          }
+        });
+        console.log(path);
+        this.polyline.path = path;
+        this.center = path[1];
+        this.dialogFormVisible = true;
       }
     }
+  }
 </script>
 
 <style scoped>
-
+  .amap-demo {
+    height: 400px;
+  }
 </style>
